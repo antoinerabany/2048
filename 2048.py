@@ -14,12 +14,10 @@ def main():
     fond = pygame.image.load("background.jpg").convert()
 
     #On initialise le plateau de jeu 4x4
-    board = [[1,1,None,2],[1,None,None,None],[1,None,1,None],[None,None,None,1]]
+    board = [[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,None,None,None]]
+    board = addTile(board)
+    board = addTile(board)
 
-
-    board = move(board,'down')
-
-    print(board)
 
     while jeu:
         for event in pygame.event.get():   #On parcours la liste de tous les événements reçus
@@ -35,10 +33,13 @@ def main():
                     board = move(board,'right')
                 if event.key == K_LEFT:
                     board = move(board,'left')
-            board = addTile(board)
+                if defeat(board) == 1:
+                    jeu = 0
+                else:
+                    board = addTile(board)
 
 
-        #window.blit(fond, (0,0))
+        window.blit(fond, (0,0))
         for i,line in enumerate(board):
             for j,val in enumerate(line):
                 if val != None:
@@ -143,6 +144,25 @@ def addTile(board):
     board[i][j] = 2
 
     return board
+
+def defeat(board):
+
+    compteur = 0
+
+    for j in range(len(board[0])):
+
+        for i,line in enumerate(board):
+
+            if board[i][j] != None:
+
+                compteur += compteur
+
+    if compteur == (len(board[0]) * len(board)):
+        return 1
+    else:
+        return 0
+
+
 
 
 
