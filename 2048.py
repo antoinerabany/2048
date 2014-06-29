@@ -157,7 +157,15 @@ def addTile(board): #Ajoute une pieces de façon random.
          i = int(random.random()*4)
          j = int(random.random()*4)
 
-    board[i][j] = 2 # <= foutre un random 80-20 entre 2 et 4 ici
+    a = random.random()
+
+    if a < 0.8:
+
+    	board[i][j] = 2
+
+    else:
+
+    	board[i][j] = 4 # <= foutre un random 80-20 entre 2 et 4 ici
 
     return board
 
