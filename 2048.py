@@ -35,25 +35,25 @@ def main():
 
                     board = move(board,'down')
 
-                if event.key == K_UP:
+                elif event.key == K_UP:
 
                     board = move(board,'up')
 
-                if event.key == K_RIGHT:
+                elif event.key == K_RIGHT:
 
                     board = move(board,'right')
 
-                if event.key == K_LEFT:
+                elif event.key == K_LEFT:
 
                     board = move(board,'left')
 
-                if defeat(board) == 1: #Pas ultra OK avec ça.
+                if defeat(board) == 1:
 
                     jeu = 0
 
                 else:
 
-                    board = addTile(board) #Celui ci non plus.
+                    board = addTile(board)
 
 
         window.blit(fond, (0,0))
@@ -169,7 +169,7 @@ def defeat(board): #Fonction qui parametre la defaite.
 
         for i,line in enumerate(board):
 
-            if board[i][j] != None:
+            if board[i][j] != None: # j'ai pas vraiment compris à partir de là ce que tu fais.
 
                 compteur += 1
                 #compteur += compteur #Plutôt "compteur += 1" non ? Tu double sa valeur en partant de 0.
