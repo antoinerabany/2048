@@ -165,7 +165,7 @@ def addTile(board): #Ajoute une pieces de façon random.
 
     else:
 
-    	board[i][j] = 4 # <= foutre un random 80-20 entre 2 et 4 ici
+    	board[i][j] = 4
 
     return board
 
@@ -187,6 +187,7 @@ def defeat(board): #Fonction qui parametre la defaite.
         return 1
 
     else:
+    	
         return 0
 
 if __name__ == "__main__":
