@@ -17,8 +17,8 @@ def main():
 
     #On initialise le plateau de jeu 4x4
     board = [[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,None,None,None]]
-    board = addTile(board)
-    board = addTile(board)
+    board = add_tile(board)
+    board = add_tile(board)
 
 
     while jeu:
@@ -34,24 +34,24 @@ def main():
                 if event.key == K_DOWN:
 
                     board = move(board,'down')
-                    board = addTile(board)
+                    board = add_tile(board)
 
                 elif event.key == K_UP:
 
                     board = move(board,'up')
-                    board = addTile(board)
+                    board = add_tile(board)
 
                 elif event.key == K_RIGHT:
 
                     board = move(board,'right')
-                    board = addTile(board)
+                    board = add_tile(board)
 
                 elif event.key == K_LEFT:
 
                     board = move(board,'left')
-                    board = addTile(board)
+                    board = add_tile(board)
 
-                elif defeat(board) == 1:
+                elif board_full(board) == 1:
 
                     jeu = 0
 
@@ -132,26 +132,26 @@ def fusion(line): #Fonction qui permet de fusionner les pieces.
 
 def transpose(board): #Transpose la matrice "board" pour simplifier les mouvements.
 
-    lineR = []
+    line_invert = []
     rotated = []
 
     for j in range(len(board[0])):
 
         for i,line in enumerate(board):
 
-            lineR.append(line.pop(0))
+            line_invert.append(line.pop(0))
 
-        rotated.append(lineR)
-        lineR = []
+        rotated.append(line_invert)
+        line_invert = []
 
     return rotated
 
-def addTile(board): #Ajoute une pieces de façon random.
+def add_tile(board): #Ajoute une pieces de façon random.
 
     i = int(random.random()*4)
     j = int(random.random()*4)
 
-    while board[i][j] != None:
+    while board[i][j] != None: # Plutot while board_full == 0 non ?
 
          i = int(random.random()*4)
          j = int(random.random()*4)
@@ -168,7 +168,7 @@ def addTile(board): #Ajoute une pieces de façon random.
 
     return board
 
-def defeat(board): #Fonction qui parametre la defaite.
+def board_full(board): #Fonction qui parametre le remplissage du board.
 
     compteur = 0
 
@@ -176,10 +176,9 @@ def defeat(board): #Fonction qui parametre la defaite.
 
         for i,line in enumerate(board):
 
-            if board[i][j] != None: # J'ai pas vraiment compris à partir de là ce que tu fais.
+            if board[i][j] != None:
 
                 compteur += 1
-                #compteur += compteur #Plutôt "compteur += 1" non ? Tu double sa valeur en partant de 0.
 
     if compteur == (len(board[0]) * len(board)):
 
