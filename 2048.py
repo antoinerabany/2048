@@ -11,6 +11,7 @@ def main():
     window = pygame.display.set_mode((400, 400))
     font = pygame.font.Font(None,90)
 
+    global jeu
     jeu = 1
 
     fond = pygame.image.load("background.jpg").convert()
@@ -31,33 +32,39 @@ def main():
 
             if event.type == KEYDOWN:
 
-                if board_full(board) == 1:
 
-                    jeu = 0
+                if event.key == K_DOWN:
 
-                elif event.key == K_DOWN:
+                    board = next(board,'down')
 
-                    newBoard = move(board,'down')
-                    if newBoard != board:
-                        board = add_tile(newBoard)
+                    # newBoard = move(board,'down')
+                    # if newBoard != board:
+                    #     board = add_tile(newBoard)
 
                 elif event.key == K_UP:
 
-                    newBoard = move(board,'up')
-                    if newBoard != board:
-                        board = add_tile(newBoard)
+                    board = next(board,'up')
+
+                    # newBoard = move(board,'up')
+                    # if newBoard != board:
+                    #     board = add_tile(newBoard)
 
                 elif event.key == K_RIGHT:
 
-                    newBoard = move(board,'right')
-                    if newBoard != board:
-                        board = add_tile(newBoard)
+                    board = next(board,'right')
+
+                    # newBoard = move(board,'right')
+                    # if newBoard != board:
+                    #     board = add_tile(newBoard)
 
                 elif event.key == K_LEFT:
 
-                    newBoard = move(board,'left')
-                    if newBoard != board:
-                        board = add_tile(newBoard)
+                    board = next(board,'left')
+
+                    # newBoard = move(board,'left')
+                    # if newBoard != board:
+                    #     board = add_tile(newBoard)
+
 
 
         window.blit(fond, (0,0))
@@ -153,26 +160,44 @@ def transpose(board): #Transpose la matrice "board" pour simplifier les mouvemen
 
 def add_tile(board): #Ajoute une piece de façon random.
 
-    if board_full == 1:
-        return "Fu"
+    free = []
 
-    i = int(random.random()*4)
-    j = int(random.random()*4)
+    for j in range(len(board[0])):
 
-    while board[i][j] != None : # Plutot while board_full == 0 non ? non
+        for i,line in enumerate(board):
 
-         i = int(random.random()*4)
-         j = int(random.random()*4)
+            if board[i][j] == None:
 
-    a = random.random()
+                free.append([i,j])
 
-    if a < 0.8:
+    # if board_full == 1:
+    #     return "Fu"
 
-    	board[i][j] = 2
+    # i = int(random.random()*4)
+    # j = int(random.random()*4)
+
+    # while board[i][j] != None : # Plutot while board_full == 0 non ? non
+
+    #      i = int(random.random()*4)
+    #      j = int(random.random()*4)
+
+    if len(free) != 0:
+
+        [i,j] = free[int(random.random()*len(free))]
+
+        a = random.random()
+
+        if a < 0.8:
+
+        	board[i][j] = 2
+
+        else:
+
+        	board[i][j] = 4
 
     else:
 
-    	board[i][j] = 4
+        jeu = 0
 
     return board
 
@@ -195,6 +220,18 @@ def board_full(board): #Fonction qui parametre le remplissage du board.
     else:
     	
         return 0
+
+def next(board,direction):
+    newBoard = move(board,direction)
+    if newBoard != board:
+        board = add_tile(newBoard)
+
+    if board_full(board) == 1:
+        jeu = 0
+
+    return board
+
+
 
 if __name__ == "__main__":
     main()
