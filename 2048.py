@@ -31,29 +31,34 @@ def main():
 
             if event.type == KEYDOWN:
 
-                if event.key == K_DOWN:
+                if board_full(board) == 1:
 
-                    board = move(board,'down')
-                    board = add_tile(board)
+                    jeu = 0
+
+                elif event.key == K_DOWN:
+
+                    newBoard = move(board,'down')
+                    if newBoard != board:
+                        board = add_tile(newBoard)
 
                 elif event.key == K_UP:
 
-                    board = move(board,'up')
-                    board = add_tile(board)
+                    newBoard = move(board,'up')
+                    if newBoard != board:
+                        board = add_tile(newBoard)
 
                 elif event.key == K_RIGHT:
 
-                    board = move(board,'right')
-                    board = add_tile(board)
+                    newBoard = move(board,'right')
+                    if newBoard != board:
+                        board = add_tile(newBoard)
 
                 elif event.key == K_LEFT:
 
-                    board = move(board,'left')
-                    board = add_tile(board)
+                    newBoard = move(board,'left')
+                    if newBoard != board:
+                        board = add_tile(newBoard)
 
-                elif board_full(board) == 1:
-
-                    jeu = 0
 
         window.blit(fond, (0,0))
 
@@ -146,12 +151,15 @@ def transpose(board): #Transpose la matrice "board" pour simplifier les mouvemen
 
     return rotated
 
-def add_tile(board): #Ajoute une pieces de façon random.
+def add_tile(board): #Ajoute une piece de façon random.
+
+    if board_full == 1:
+        return "Fu"
 
     i = int(random.random()*4)
     j = int(random.random()*4)
 
-    while board[i][j] != None: # Plutot while board_full == 0 non ?
+    while board[i][j] != None : # Plutot while board_full == 0 non ? non
 
          i = int(random.random()*4)
          j = int(random.random()*4)
