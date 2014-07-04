@@ -14,6 +14,7 @@ def main():
     go = 1 
     jeu = 1
     vict = 0
+    end = 0
 
     fond = pygame.image.load("background.jpg").convert()
 
@@ -37,13 +38,14 @@ def main():
                 if event.type == QUIT:
 
                     jeu = 0
+                    fin = 0
 
                 if event.type == KEYDOWN:
 
                     if board_full(board)==1 and defeat(board)==1:
 
                         jeu = 0
-                        fin = 1
+                        end = 1
 
                     elif event.key == K_DOWN:
 
@@ -81,8 +83,9 @@ def main():
 
                         jeu = 0
                         vict = 1
-                        fin = 1
+                        end = 1
 
+                    print board
 
 
 
@@ -109,7 +112,7 @@ def main():
                 if event.type == KEYDOWN:
 
                     jeu = 1
-                    fin = 0
+                    end = 0
 
             window.blit(fond, (0,0))
 
@@ -134,7 +137,7 @@ def move(board,direction): #Fonction principale pour faire bouger les pieces.
 
         for i,line in enumerate(board):
 
-            fusion(line)
+            line = fusion(line)
 
     elif direction == 'right':
 
@@ -142,7 +145,7 @@ def move(board,direction): #Fonction principale pour faire bouger les pieces.
 
             line.reverse()
 
-            fusion(line)
+            line = fusion(line)
 
             line.reverse()
 
@@ -191,6 +194,8 @@ def fusion(line): #Fonction qui permet de fusionner les pieces.
 
                         pass
 
+    return line
+
 def transpose(board): #Transpose la matrice "board" pour simplifier les mouvements.
 
     line_invert = []
@@ -198,12 +203,14 @@ def transpose(board): #Transpose la matrice "board" pour simplifier les mouvemen
 
     for j in range(len(board[0])):
 
+        line_invert = []
+
         for i,line in enumerate(board):
 
             line_invert.append(line.pop(0))
 
         rotated.append(line_invert)
-        line_invert = []
+        #line_invert = []
 
     return rotated
 
@@ -256,7 +263,9 @@ def board_full(board): #Fonction qui parametre le remplissage du board.
         return 0
 
 def next(board,direction):
+
     newBoard = move(board,direction)
+
     if newBoard != board:
         board = add_tile(newBoard)
 
