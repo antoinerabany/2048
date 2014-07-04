@@ -11,8 +11,9 @@ def main():
     window = pygame.display.set_mode((400, 400))
     font = pygame.font.Font(None,90)
 
-    global jeu
+    go = 1 
     jeu = 1
+    vict = 0
 
     fond = pygame.image.load("background.jpg").convert()
 
@@ -21,68 +22,116 @@ def main():
     board = add_tile(board)
     board = add_tile(board)
 
-
-    while jeu:
+    while go:
 
         for event in pygame.event.get():   #On parcours la liste de tous les événements reçus
 
-            if event.type == QUIT:   
+            if event.type == QUIT:
 
-                jeu = 0
+                go = 0
 
-            if event.type == KEYDOWN:
+        while jeu:
+
+            for event in pygame.event.get():   #On parcours la liste de tous les événements reçus
+
+                if event.type == QUIT:
+
+                    jeu = 0
+
+                if event.type == KEYDOWN:
+
+                    if board_full(board)==1 and defeat(board)==1:
+
+                        jeu = 0
+                        fin = 1
+
+                    elif event.key == K_DOWN:
+
+                        board = next(board,'down')
+
+                        # newBoard = move(board,'down')
+                        # if newBoard != board:
+                        #     board = add_tile(newBoard)
+
+                    elif event.key == K_UP:
+
+                        board = next(board,'up')
+
+                        # newBoard = move(board,'up')
+                        # if newBoard != board:
+                        #     board = add_tile(newBoard)
+
+                    elif event.key == K_RIGHT:
+
+                        board = next(board,'right')
+
+                        # newBoard = move(board,'right')
+                        # if newBoard != board:
+                        #     board = add_tile(newBoard)
+
+                    elif event.key == K_LEFT:
+
+                        board = next(board,'left')
+
+                        # newBoard = move(board,'left')
+                        # if newBoard != board:
+                        #     board = add_tile(newBoard)
+
+                    if victory(board) == 1:
+
+                        jeu = 0
+                        vict = 1
+                        fin = 1
 
 
-                if event.key == K_DOWN:
-
-                    board = next(board,'down')
-
-                    # newBoard = move(board,'down')
-                    # if newBoard != board:
-                    #     board = add_tile(newBoard)
-
-                elif event.key == K_UP:
-
-                    board = next(board,'up')
-
-                    # newBoard = move(board,'up')
-                    # if newBoard != board:
-                    #     board = add_tile(newBoard)
-
-                elif event.key == K_RIGHT:
-
-                    board = next(board,'right')
-
-                    # newBoard = move(board,'right')
-                    # if newBoard != board:
-                    #     board = add_tile(newBoard)
-
-                elif event.key == K_LEFT:
-
-                    board = next(board,'left')
-
-                    # newBoard = move(board,'left')
-                    # if newBoard != board:
-                    #     board = add_tile(newBoard)
 
 
+            window.blit(fond, (0,0))
 
-        window.blit(fond, (0,0))
+            for i,line in enumerate(board):
 
-        for i,line in enumerate(board):
+                for j,val in enumerate(line):
 
-            for j,val in enumerate(line):
+                    if val != None:
 
-                if val != None:
+                        window.blit(font.render(str(val), 1, (255,0,0)), (j*100,i*100))
 
-                    window.blit(font.render(str(val), 1, (255,0,0)), (j*100,i*100))
+            pygame.display.flip()
 
-        pygame.display.flip()
+        while end:
+
+            for event in pygame.event.get():   #On parcours la liste de tous les événements reçus
+
+                if event.type == QUIT:
+
+                    jeu = 0
+
+                if event.type == KEYDOWN:
+
+                    jeu = 1
+                    fin = 0
+
+            window.blit(fond, (0,0))
+
+            if vict == 0:
+                window.blit(font.render('Perdu !', 1, (255,255,255)), (100,200))
+
+            if vict == 1:
+                window.blit(font.render('Gagné !', 1, (255,255,255)), (100,200))
+
+            window.blit(font.render('Pressez une touche pour rejouer', 1, (255,255,255)), (200,200))
+
+            pygame.display.flip()
+
+
+
+
+
 
 def move(board,direction): #Fonction principale pour faire bouger les pieces.
 
     if direction == 'left':
-        
+
         for i,line in enumerate(board):
 
             fusion(line)
@@ -123,7 +172,7 @@ def fusion(line): #Fonction qui permet de fusionner les pieces.
 
                 pass
 
-            else: 
+            else:
 
                 if  line[j-n-1] == None:
 
@@ -170,17 +219,6 @@ def add_tile(board): #Ajoute une piece de façon random.
 
                 free.append([i,j])
 
-    # if board_full == 1:
-    #     return "Fu"
-
-    # i = int(random.random()*4)
-    # j = int(random.random()*4)
-
-    # while board[i][j] != None : # Plutot while board_full == 0 non ? non
-
-    #      i = int(random.random()*4)
-    #      j = int(random.random()*4)
-
     if len(free) != 0:
 
         [i,j] = free[int(random.random()*len(free))]
@@ -194,10 +232,6 @@ def add_tile(board): #Ajoute une piece de façon random.
         else:
 
         	board[i][j] = 4
-
-    else:
-
-        jeu = 0
 
     return board
 
@@ -218,7 +252,7 @@ def board_full(board): #Fonction qui parametre le remplissage du board.
         return 1
 
     else:
-    	
+
         return 0
 
 def next(board,direction):
@@ -226,10 +260,40 @@ def next(board,direction):
     if newBoard != board:
         board = add_tile(newBoard)
 
-    if board_full(board) == 1:
-        jeu = 0
-
     return board
+
+def defeat(board):
+
+    dirList = ['right','left','up','down']
+    newBoard = board
+
+    for dir in dirList:
+
+        newBoard = move(newBoard,dir)    
+
+    if newBoard == board:
+
+        return 1
+
+    else:
+
+        return 0
+
+def victory(board):
+
+    a = 0
+
+    for i,line in enumerate(board):
+        a += board.count(2048)
+
+    if a == 0:
+
+        return 0
+
+    else:
+
+        return 1
+
 
 
 
