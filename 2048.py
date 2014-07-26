@@ -10,6 +10,7 @@ def main():
     pygame.init()
     window = pygame.display.set_mode((400, 400))
     font = pygame.font.Font(None,90)
+    smallFont = pygame.font.Font(None,30)
 
     go = 1 
     jeu = 1
@@ -42,7 +43,7 @@ def main():
 
                 if event.type == KEYDOWN:
 
-                    if board_full(board)==1 and defeat(board)==1:
+                    if defeat(board) == 1: #board_full(board)==1 and
 
                         jeu = 0
                         end = 1
@@ -85,7 +86,6 @@ def main():
                         vict = 1
                         end = 1
 
-                    print board
 
 
 
@@ -113,6 +113,9 @@ def main():
 
                     jeu = 1
                     end = 0
+                    board = [[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,None,None,None]]
+                    board = add_tile(board)
+                    board = add_tile(board)
 
             window.blit(fond, (0,0))
 
@@ -122,7 +125,7 @@ def main():
             if vict == 1:
                 window.blit(font.render('Gagné !', 1, (255,255,255)), (100,200))
 
-            window.blit(font.render('Pressez une touche pour rejouer', 1, (255,255,255)), (200,200))
+            window.blit(smallFont.render('Pressez une touche pour rejouer', 1, (255,255,255)), (0,0))
 
             pygame.display.flip()
 
@@ -139,6 +142,7 @@ def move(board,direction): #Fonction principale pour faire bouger les pieces.
 
             line = fusion(line)
 
+
     elif direction == 'right':
 
         for i,line in enumerate(board):
@@ -148,6 +152,7 @@ def move(board,direction): #Fonction principale pour faire bouger les pieces.
             line = fusion(line)
 
             line.reverse()
+
 
     elif direction == 'up':
 
@@ -159,13 +164,15 @@ def move(board,direction): #Fonction principale pour faire bouger les pieces.
 
     else:
 
-        print('error')
+        print 'merdouille'
 
     return board
 
 def fusion(line): #Fonction qui permet de fusionner les pieces.
 
     fusion = 0 #Permet de ne pas tout fusionner d'un coup.
+
+    lastFusion = None
 
     for j,tile in enumerate(line):
 
@@ -184,8 +191,9 @@ def fusion(line): #Fonction qui permet de fusionner les pieces.
 
                 if line[j-n-1] != None:
 
-                    if line[j-n-1] == line[j-n] and fusion == 0:
+                    if line[j-n-1] == line[j-n] and (lastFusion == line[j-n] or fusion == 0):
 
+                        lastFusion = line[j-n]
                         line[j-n-1] = 2*line[j-n]
                         line[j-n] = None
                         fusion = 1
@@ -264,23 +272,31 @@ def board_full(board): #Fonction qui parametre le remplissage du board.
 
 def next(board,direction):
 
-    newBoard = move(board,direction)
+    lastBoard = new(board)
+    board = move(board,direction)
 
-    if newBoard != board:
-        board = add_tile(newBoard)
+    #if newBoard != board:
+    if equals(board,lastBoard) == False:
+        board = add_tile(board)
 
     return board
 
 def defeat(board):
 
+    i = 0
     dirList = ['right','left','up','down']
-    newBoard = board
 
-    for dir in dirList:
+    for direction in dirList:
 
-        newBoard = move(newBoard,dir)    
+        newBoard = move(new(board),direction)
 
-    if newBoard == board:
+        if equals(board,newBoard) :
+
+            i += 1 
+
+
+    #if board == newBoard:
+    if i == 4:
 
         return 1
 
@@ -303,8 +319,37 @@ def victory(board):
 
         return 1
 
+def new(board):
 
+    newBoard = []
+
+    for l in board:
+
+        newBoard.append(list(l))
+
+    return newBoard
+
+def equals(board1,board2):
+
+    i = 0
+
+    for k in range(len(board1)):
+
+        if board1[k] == board2[k]:
+
+            i += 1
+
+    if i == 4:
+
+        return True
+
+    else:
+
+        return False
 
 
 if __name__ == "__main__":
     main()
+    board = [[1,2,None,None],[None,1,None,None],[None,None,1,None],[None,None,None,1]]
+    board = transpose(move(transpose(board),'left'))
+    print board
