@@ -17,7 +17,9 @@ def main():
     vict = 0
     end = 0
 
-    fond = pygame.image.load("background.jpg").convert()
+    fond = pygame.image.load("back.png").convert()
+
+    tile = {x: pygame.image.load(str(x)+'.png').convert() for x in (2,4,8,16,32,64,128,256,512,1024,2048)}
 
     #On initialise le plateau de jeu 4x4
     board = [[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,None,None,None]]
@@ -39,7 +41,8 @@ def main():
                 if event.type == QUIT:
 
                     jeu = 0
-                    fin = 0
+                    end = 0
+                    go = 0
 
                 if event.type == KEYDOWN:
 
@@ -97,7 +100,7 @@ def main():
 
                     if val != None:
 
-                        window.blit(font.render(str(val), 1, (255,0,0)), (j*100,i*100))
+                        window.blit(tile[val], (j*100,i*100))
 
             pygame.display.flip()
 
@@ -108,6 +111,8 @@ def main():
                 if event.type == QUIT:
 
                     jeu = 0
+                    go = 0
+                    end = 0
 
                 if event.type == KEYDOWN:
 
@@ -119,11 +124,20 @@ def main():
 
             window.blit(fond, (0,0))
 
+            for i,line in enumerate(board):
+
+                for j,val in enumerate(line):
+
+                    if val != None:
+
+                        window.blit(tile[val], (j*100,i*100))
+
+
             if vict == 0:
-                window.blit(font.render('Perdu !', 1, (255,255,255)), (100,200))
+                window.blit(font.render('Perdu !', 1, (255,255,255)), (100,130))
 
             if vict == 1:
-                window.blit(font.render('Gagné !', 1, (255,255,255)), (100,200))
+                window.blit(font.render('Gagné !', 1, (255,255,255)), (100,130))
 
             window.blit(smallFont.render('Pressez une touche pour rejouer', 1, (255,255,255)), (0,0))
 
