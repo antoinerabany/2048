@@ -116,11 +116,19 @@ def main():
 
                 if event.type == KEYDOWN:
 
-                    jeu = 1
-                    end = 0
-                    board = [[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,None,None,None]]
-                    board = add_tile(board)
-                    board = add_tile(board)
+                    if event.key == K_SPACE :
+
+                        jeu = 1
+                        end = 0
+                        board = [[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,None,None,None]]
+                        board = add_tile(board)
+                        board = add_tile(board)
+
+                    if event.key == K_ESCAPE :
+
+                        jeu = 0
+                        go = 0
+                        end = 0
 
             window.blit(fond, (0,0))
 
@@ -139,7 +147,9 @@ def main():
             if vict == 1:
                 window.blit(font.render('Gagné !', 1, (255,255,255)), (100,130))
 
-            window.blit(smallFont.render('Pressez une touche pour rejouer', 1, (255,255,255)), (0,0))
+            window.blit(smallFont.render('Pressez espace pour rejouer', 1, (255,255,255)), (40,250))
+
+            window.blit(smallFont.render('Pressez echap pour quitter', 1, (255,255,255)), (40,300))
 
             pygame.display.flip()
 
