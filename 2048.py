@@ -56,33 +56,17 @@ def main():
 
                         board = next(board,'down')
 
-                        # newBoard = move(board,'down')
-                        # if newBoard != board:
-                        #     board = add_tile(newBoard)
-
                     elif event.key == K_UP:
 
                         board = next(board,'up')
-
-                        # newBoard = move(board,'up')
-                        # if newBoard != board:
-                        #     board = add_tile(newBoard)
 
                     elif event.key == K_RIGHT:
 
                         board = next(board,'right')
 
-                        # newBoard = move(board,'right')
-                        # if newBoard != board:
-                        #     board = add_tile(newBoard)
-
                     elif event.key == K_LEFT:
 
                         board = next(board,'left')
-
-                        # newBoard = move(board,'left')
-                        # if newBoard != board:
-                        #     board = add_tile(newBoard)
 
                     if victory(board) == 1:
 
@@ -107,7 +91,7 @@ def main():
 
         while end:
 
-            for event in pygame.event.get():   #On parcours la liste de tous les événements reçus
+            for event in pygame.event.get():
 
                 if event.type == QUIT:
 
@@ -148,9 +132,9 @@ def main():
             if vict == 1:
                 window.blit(font.render('Gagné !', 1, (255,255,255)), (100,130))
 
-            window.blit(smallFont.render('Pressez espace pour rejouer', 1, (255,255,255)), (40,250))
+            window.blit(smallFont.render('Pressez espace pour rejouer', 1, (255,255,255)), (50,250))
 
-            window.blit(smallFont.render('Pressez echap pour quitter', 1, (255,255,255)), (40,300))
+            window.blit(smallFont.render('Pressez echap pour quitter', 1, (255,255,255)), (60,300))
 
             pygame.display.flip()
 
@@ -225,7 +209,7 @@ def fusion(line):
                         line[j-n] = None
                         fusion = 1
 
-                    else: # board[i][j-1] != tile
+                    else:
 
                         pass
 
@@ -246,7 +230,6 @@ def transpose(board):
             line_invert.append(line.pop(0))
 
         rotated.append(line_invert)
-        #line_invert = []
 
     return rotated
 
@@ -312,8 +295,6 @@ def defeat(board):
 
             i += 1 
 
-
-    #if board == newBoard:
     if i == 4:
 
         return 1
@@ -377,6 +358,3 @@ def equals(board1,board2):
 
 if __name__ == "__main__":
     main()
-    board = [[1,2,None,None],[None,1,None,None],[None,None,1,None],[None,None,None,1]]
-    board = transpose(move(transpose(board),'left'))
-    print board
