@@ -6,6 +6,7 @@ from pygame.locals import *
 import random
 
 def main():
+    """main fuction with the use of pygame."""
 
     pygame.init()
     window = pygame.display.set_mode((400, 400))
@@ -46,7 +47,7 @@ def main():
 
                 if event.type == KEYDOWN:
 
-                    if defeat(board) == 1: #board_full(board)==1 and
+                    if defeat(board) == 1:
 
                         jeu = 0
                         end = 1
@@ -158,7 +159,8 @@ def main():
 
 
 
-def move(board,direction): #Fonction principale pour faire bouger les pieces.
+def move(board,direction):
+    """Return the board after a movement in a direction."""
 
     if direction == 'left':
 
@@ -188,11 +190,12 @@ def move(board,direction): #Fonction principale pour faire bouger les pieces.
 
     else:
 
-        print 'merdouille'
+        pass
 
     return board
 
-def fusion(line): #Fonction qui permet de fusionner les pieces.
+def fusion(line):
+    """Modify the line of the board in order to fusion the tiles"""
 
     fusion = 0 #Permet de ne pas tout fusionner d'un coup.
 
@@ -228,7 +231,8 @@ def fusion(line): #Fonction qui permet de fusionner les pieces.
 
     return line
 
-def transpose(board): #Transpose la matrice "board" pour simplifier les mouvements.
+def transpose(board):
+    """Return the transposed of the matrix board."""
 
     line_invert = []
     rotated = []
@@ -246,7 +250,8 @@ def transpose(board): #Transpose la matrice "board" pour simplifier les mouvemen
 
     return rotated
 
-def add_tile(board): #Ajoute une piece de façon random.
+def add_tile(board):
+    """add a randomly placed tile in the board."""
 
     free = []
 
@@ -274,27 +279,12 @@ def add_tile(board): #Ajoute une piece de façon random.
 
     return board
 
-def board_full(board): #Fonction qui parametre le remplissage du board.
-
-    compteur = 0
-
-    for j in range(len(board[0])):
-
-        for i,line in enumerate(board):
-
-            if board[i][j] != None:
-
-                compteur += 1
-
-    if compteur == (len(board[0]) * len(board)):
-
-        return 1
-
-    else:
-
-        return 0
-
 def next(board,direction):
+    """Return the board after a movement in a direction.
+
+    If the board can be move in a direction, it is done.
+    If not, nothing is done.
+    """
 
     lastBoard = new(board)
     board = move(board,direction)
@@ -306,6 +296,10 @@ def next(board,direction):
     return board
 
 def defeat(board):
+    """Return 1 in case of defeat, 0 else.
+
+    Check if the board can be moved in any direction, if not it's defeat.
+    """
 
     i = 0
     dirList = ['right','left','up','down']
@@ -329,6 +323,10 @@ def defeat(board):
         return 0
 
 def victory(board):
+    """Return 1 in case of victory, 0 else
+
+    Check if a tile in board have a value of 2048 then it's victory.
+    """
 
     a = 0
 
@@ -344,6 +342,7 @@ def victory(board):
         return 1
 
 def new(board):
+    """Return a new board with the same value as board"""  
 
     newBoard = []
 
@@ -354,6 +353,10 @@ def new(board):
     return newBoard
 
 def equals(board1,board2):
+    """Check if 2 boards are equals.
+
+    if the boards have the same values at the same positions they are equals.
+    """
 
     i = 0
 
