@@ -75,7 +75,7 @@ def main():
                         end = 1
 
 
-
+            pygame.time.Clock().tick(40)
 
             window.blit(fond, (0,0))
 
