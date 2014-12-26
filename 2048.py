@@ -358,3 +358,63 @@ def equals(board1,board2):
 
 if __name__ == "__main__":
     main()
+
+class Board:
+
+    new_board = [[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,None,None,None]]
+
+    def __init__(self,board=self.new_board):
+
+        self.board = []
+
+        for l in board:
+
+            self.board.append(line(l))
+
+    def __eq__(self,other):
+
+        i = 0
+
+        for k in range(len(self)):
+
+            if self.board[k] == other.board[k]:
+
+                i += 1
+
+        if i == 4:
+
+            return True
+
+        else:
+
+            return False
+
+    def __len__(self):
+
+        return len(self.board)
+
+    def victory(self):
+        """Return 1 in case of victory, 0 else
+
+        Check if a tile in board have a value of 2048 then it's victory.
+        """
+
+        a = 0
+
+        for i,line in enumerate(self.board):
+            a += self.board.count(2048)
+
+        if a == 0:
+
+            return 0
+
+        else:
+
+            return 1
+
+
+
+
+
+
+
